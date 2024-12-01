@@ -37,8 +37,8 @@ export default function RootLayout({
           <SidebarProvider>
             <AppSidebar />
 
-            <main className="min-h-screen flex flex-col items-center">
-              <div className="flex flex-col lg:gap-20 items-start">
+            <main className="min-h-screen flex flex-col items-center w-full">
+              <div className="flex flex-col items-start">
                 <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
                   <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
                     <div className="flex gap-5 items-center font-semibold">
@@ -50,7 +50,7 @@ export default function RootLayout({
                     {!hasEnvVars ? <EnvVarWarning /> : <HeaderAuth />}
                   </div>
                 </nav>
-                <div className="flex flex-col max-w-[100vw] p-5">
+                <div className="flex flex-col max-w-[100vw] lg:max-w-5xl p-5">
                   {children}
                 </div>
 

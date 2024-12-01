@@ -52,10 +52,10 @@ const monthEventVariants = cva("size-2 rounded-full", {
   }
 });
 
-const dayEventVariants = cva("font-bold border-l-4 rounded p-2 text-xs", {
+const dayEventVariants = cva("font-bold rounded-xl p-4 text-xs", {
   variants: {
     variant: {
-      default: "bg-muted/30 text-muted-foreground border-muted",
+      default: "bg-stone-900/10 text-muted-foreground ring-stone-900",
       blue: "bg-blue-500/30 text-blue-600 border-blue-500",
       green: "bg-green-500/30 text-green-600 border-green-500",
       pink: "bg-pink-500/30 text-pink-600 border-pink-500",
@@ -90,6 +90,7 @@ export type CalendarEvent = {
   start: Date;
   end: Date;
   title: string;
+  description?: string;
   color?: VariantProps<typeof monthEventVariants>["variant"];
 };
 
@@ -215,7 +216,10 @@ const EventGroup = ({
                 height: `${hoursDifference * 100}%`
               }}
             >
-              {event.title}
+              <p className="text-lg">{event.title}</p>
+              <p className="font-normal text-xs text-stone-900/50 dark:text-stone-100/50">
+                {event.description}
+              </p>
             </div>
           );
         })}
@@ -270,7 +274,7 @@ const CalendarWeekView = () => {
   if (view !== "week") return null;
 
   return (
-    <div className="flex flex-col relative">
+    <div className="flex flex-col relative w-full">
       <div className="flex sticky top-0 bg-card z-10 border-b mb-3">
         <div className="w-12"></div>
         {headerDays.map((date, i) => (
@@ -573,7 +577,12 @@ const CalendarCurrentDate = () => {
 
   return (
     <time dateTime={date.toISOString()} className="tabular-nums">
-      {format(date, view === "day" ? "dd MMMM yyyy" : "MMMM yyyy")}
+      {view === "day" && format(date, "dd MMMM yyyy")}
+      {view === "week" && format(date, "MMMM yyyy")}
+      {view === "month" && format(date, "MMMM yyyy")}
+      {view === "year" && format(date, "yyyy")}
+      {/*       {format(date, view === "day" ? "dd MMMM yyyy" : "MMMM yyyy")}
+       */}{" "}
     </time>
   );
 };
@@ -586,12 +595,12 @@ const TimeTable = () => {
       {Array.from(Array(25).keys()).map((hour) => {
         return (
           <div
-            className="text-right relative text-xs text-muted-foreground/50 h-20 last:h-0"
+            className="text-right relative text-xs text-muted-foreground/50 rounded-md h-20 last:h-0 w-full"
             key={hour}
           >
             {now.getHours() === hour && (
               <div
-                className="absolute z- left-full translate-x-2 w-dvw h-[2px] bg-red-500"
+                className="absolute z- left-full translate-x-2 w-full h-[2px] bg-red-500"
                 style={{
                   top: `${(now.getMinutes() / 60) * 100}%`
                 }}
